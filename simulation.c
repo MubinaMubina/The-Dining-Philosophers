@@ -1,0 +1,38 @@
+#include "philo.h"
+
+/*
+** Sets table->start_time, initializes each philo's last_meal_time to that,
+** then creates one pthread per philo (running philo_routine) plus the
+** monitor thread. Joins all threads before returning.
+** Return 0 on a clean simulation, 1 if any pthread_create fails.
+*/
+int	start_simulation(t_table *table)
+{
+	(void)table;
+	return (0);
+}
+
+/*
+** Thread function for each philosopher. Loop until simulation_stopped():
+**   1. take_forks  - lock both forks (use lock-ordering or odd/even split
+**                    to avoid deadlock); print "has taken a fork" twice
+**   2. eat         - lock meal_mutex; update last_meal_time + meals_eaten;
+**                    unlock; print "is eating"; precise_sleep_ms(time_to_eat)
+**   3. drop_forks  - unlock both forks
+**   4. philo_sleep - print "is sleeping"; precise_sleep_ms(time_to_sleep)
+**   5. philo_think - print "is thinking" (small sleep helps fairness when
+**                    time_to_die is much larger than eat+sleep)
+**
+** Special case: if num_philos == 1, take the only fork and wait to die.
+** Special case: stagger odd ids with a small usleep at start so they don't
+**               all race for the same forks at t=0.
+**
+** Helpers (take_forks, eat, drop_forks, philo_sleep, philo_think) can be
+** static functions in this file - but the 42 norm caps each .c file at 5
+** functions, so you may want to split them into a separate actions.c.
+*/
+void	*philo_routine(void *arg)
+{
+	(void)arg;
+	return (NULL);
+}
