@@ -10,9 +10,23 @@
 **     (do it in start_simulation, not here, so the clock starts at thread launch)
 ** Return 0 on success, 1 on allocation/mutex_init failure (cleanup on failure).
 */
-int	init_table(t_table *table)
+int init_table(t_table *table)
 {
-	(void)table;
+	table->stop_flag = 0;
+	if (pthread_mutex_init(&table->stop_mutex, NULL) != 0)
+		return (1);
+	if (pthread_mutex_init(&table->print_mutex, NULL) != 0)
+		return (1);
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philos);
+	if (!table->forks)
+		return (1);
+	table->philos = malloc(sizeof(t_philo) * table->num_philos);
+	if (!table->philos)
+		return (1);
+	if (init_forks(table) != 0)
+		return (1);
+	if (init_philos(table) != 0)
+		return (1);
 	return (0);
 }
 
@@ -20,9 +34,17 @@ int	init_table(t_table *table)
 ** Initializes each of the N fork mutexes in table->forks.
 ** Return 0 on success, 1 if any pthread_mutex_init fails.
 */
-int	init_forks(t_table *table)
+int init_forks(t_table *table)
 {
-	(void)table;
+	int i;
+
+	i = 0;
+	while (i < table->num_philos)
+	{
+		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
@@ -36,8 +58,24 @@ int	init_forks(t_table *table)
 **   - table back-pointer set
 ** Return 0 on success, 1 on mutex_init failure.
 */
-int	init_philos(t_table *table)
+int init_philos(t_table *table)
 {
-	(void)table;
+	int i;
+	t_philo *philo;
+	i = 0;
+	while (i < table->num_philos)
+	{
+		philo = &table->philos[i];
+		philo->id = i + 1;
+		philo->meals_eaten = 0;
+		philo->last_meal_time = 0;
+		philo->left_fork = &table->forks[i];
+		philo->right_fork = &table->forks[(i + 1) % table->num_philos];
+		philo->table = table;
+		if (pthread_mutex_init(&philo->meal_mutex, NULL) != 0)
+			return (1);
+		i++;
+	}
+
 	return (0);
 }
