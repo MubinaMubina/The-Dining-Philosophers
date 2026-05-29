@@ -9,7 +9,8 @@ SRCS	= main.c \
 		  simulation.c \
 		  monitor.c \
 		  utils.c \
-		  cleanup.c
+		  cleanup.c \
+		  actions.c
 
 OBJS	= $(SRCS:.c=.o)
 HEADER	= philo.h

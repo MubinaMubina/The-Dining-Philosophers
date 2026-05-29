@@ -66,4 +66,13 @@ int		simulation_stopped(t_table *table);
 /* cleanup.c */
 void	cleanup(t_table *table);
 
+/* actions.c */
+void    take_forks(t_philo *philo);
+void    eat(t_philo *philo);
+void    drop_forks(t_philo *philo);
+void    philo_sleep(t_philo *philo);
+void    philo_think(t_philo *philo);
+void    *handle_one_philo(t_philo *philo);
+
+
 #endif

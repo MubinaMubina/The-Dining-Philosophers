@@ -6,11 +6,32 @@
 ** monitor thread. Joins all threads before returning.
 ** Return 0 on a clean simulation, 1 if any pthread_create fails.
 */
-int	start_simulation(t_table *table)
+int     start_simulation(t_table *table)
 {
-	(void)table;
-	return (0);
+    int i;
+
+    table->start_time = get_time_ms();
+    i = 0;
+    while (i < table->num_philos)
+    {
+        table->philos[i].last_meal_time = table->start_time;
+        if (pthread_create(&table->philos[i].thread, NULL,
+                philo_routine, &table->philos[i]) != 0)
+            return (1);
+        i++;
+    }
+    if (pthread_create(&table->monitor, NULL, monitor_routine, table) != 0)
+        return (1);
+    i = 0;
+    while (i < table->num_philos)
+    {
+        pthread_join(table->philos[i].thread, NULL);
+        i++;
+    }
+    pthread_join(table->monitor, NULL);
+    return (0);
 }
+
 
 /*
 ** Thread function for each philosopher. Loop until simulation_stopped():
@@ -31,8 +52,28 @@ int	start_simulation(t_table *table)
 ** static functions in this file - but the 42 norm caps each .c file at 5
 ** functions, so you may want to split them into a separate actions.c.
 */
-void	*philo_routine(void *arg)
+void    *philo_routine(void *arg)
 {
-	(void)arg;
-	return (NULL);
+    t_philo *philo;
+
+    philo = (t_philo *)arg;
+
+    /* edge case: 1 philosopher has only 1 fork, can't ever eat → die */
+    if (philo->table->num_philos == 1)
+        return (handle_one_philo(philo));
+
+    /* stagger start to reduce contention */
+    if (philo->id % 2 == 1)
+        usleep(1000);
+
+    while (!simulation_stopped(philo->table))
+    {
+        take_forks(philo);
+        eat(philo);
+        drop_forks(philo);
+        philo_sleep(philo);
+        philo_think(philo);
+    }
+    return (NULL);
 }
+
