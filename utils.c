@@ -20,8 +20,15 @@ long get_time_ms(void)
 */
 void precise_sleep_ms(long ms, t_table *table)
 {
-	(void)ms;
-	(void)table;
+	long target;
+
+	target = get_time_ms() + ms;
+	while (get_time_ms() < target)
+	{
+		if (simulation_stopped(table))
+			return;
+		usleep(500);
+	}
 }
 
 /*
@@ -33,8 +40,17 @@ void precise_sleep_ms(long ms, t_table *table)
 */
 void print_status(t_philo *philo, const char *status)
 {
-	(void)philo;
-	(void)status;
+	long elapsed;
+
+	pthread_mutex_lock(&philo->table->print_mutex);
+	if (simulation_stopped(philo->table))
+	{
+		pthread_mutex_unlock(&philo->table->print_mutex);
+		return;
+	}
+	elapsed = get_time_ms() - philo->table->start_time;
+	printf("%ld %d %s\n", elapsed, philo->id, status);
+	pthread_mutex_unlock(&philo->table->print_mutex);
 }
 
 /*
@@ -43,6 +59,18 @@ void print_status(t_philo *philo, const char *status)
 */
 int simulation_stopped(t_table *table)
 {
-	(void)table;
-	return (0);
+	int stopped;
+	pthread_mutex_lock(&table->stop_mutex);
+	stopped = table->stop_flag;
+	pthread_mutex_unlock(&table->stop_mutex);
+	return (stopped);
+}
+
+void *handle_one_philo(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	print_status(philo, "has taken a fork");
+	precise_sleep_ms(philo->table->time_to_die, philo->table);
+	pthread_mutex_unlock(philo->left_fork);
+	return (NULL);
 }
