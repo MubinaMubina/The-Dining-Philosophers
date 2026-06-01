@@ -11,7 +11,19 @@
 ** against destroying mutexes that were never initialized (track init state
 ** in init_table, or only call cleanup with fully-initialized tables).
 */
-void	cleanup(t_table *table)
+void cleanup(t_table *table)
 {
-	(void)table;
+	int i;
+
+	i = 0;
+	while (i < table->num_philos)
+	{
+		pthread_mutex_destroy(&table->forks[i]);
+		pthread_mutex_destroy(&table->philos[i].meal_mutex);
+		i++;
+	}
+	pthread_mutex_destroy(&table->stop_mutex);
+	pthread_mutex_destroy(&table->print_mutex);
+	free(table->forks);
+	free(table->philos);
 }
