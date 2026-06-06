@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/06 17:46:56 by mmubina           #+#    #+#             */
+/*   Updated: 2026/06/06 17:49:04 by mmubina          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 /*
@@ -7,10 +19,11 @@
 **   - Initialize table->stop_mutex and table->print_mutex
 **   - Call init_forks() and init_philos()
 **   - Set table->start_time = get_time_ms() ONLY right before threads launch
-**     (do it in start_simulation, not here, so the clock starts at thread launch)
+**     (do it in start_simulation, not here,
+	so the clock starts at thread launch)
 ** Return 0 on success, 1 on allocation/mutex_init failure (cleanup on failure).
 */
-int init_table(t_table *table)
+int	init_table(t_table *table)
 {
 	table->stop_flag = 0;
 	if (pthread_mutex_init(&table->stop_mutex, NULL) != 0)
@@ -34,9 +47,9 @@ int init_table(t_table *table)
 ** Initializes each of the N fork mutexes in table->forks.
 ** Return 0 on success, 1 if any pthread_mutex_init fails.
 */
-int init_forks(t_table *table)
+int	init_forks(t_table *table)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < table->num_philos)
@@ -58,10 +71,11 @@ int init_forks(t_table *table)
 **   - table back-pointer set
 ** Return 0 on success, 1 on mutex_init failure.
 */
-int init_philos(t_table *table)
+int	init_philos(t_table *table)
 {
-	int i;
-	t_philo *philo;
+	int		i;
+	t_philo	*philo;
+
 	i = 0;
 	while (i < table->num_philos)
 	{
@@ -76,6 +90,5 @@ int init_philos(t_table *table)
 			return (1);
 		i++;
 	}
-
 	return (0);
 }

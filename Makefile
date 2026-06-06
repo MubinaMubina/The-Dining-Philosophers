@@ -1,9 +1,21 @@
-NAME	= philo
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2026/06/06 17:47:19 by mmubina           #+#    #+#              #
+#    Updated: 2026/06/06 17:47:27 by mmubina          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -pthread
+NAME = philo
 
-SRCS	= main.c \
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -pthread
+
+SRCS = main.c \
 		  parse.c \
 		  init.c \
 		  simulation.c \
@@ -13,7 +25,7 @@ SRCS	= main.c \
 		  actions.c
 
 OBJS	= $(SRCS:.c=.o)
-HEADER	= philo.h
+HEADER = philo.h
 
 all: $(NAME)
 

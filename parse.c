@@ -1,10 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/06/06 17:47:39 by mmubina           #+#    #+#             */
+/*   Updated: 2026/06/06 17:48:50 by mmubina          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-
-
-static int parse_int_field(const char *arg, int *dst)
+static int	parse_int_field(const char *arg, int *dst)
 {
-	long val;
+	long	val;
 
 	if (ft_atol_positive(arg, &val) != 0)
 		return (1);
@@ -22,8 +32,7 @@ static int parse_int_field(const char *arg, int *dst)
 ** Print an error to stderr on bad input. Return 0 on success, 1 on error.
 */
 
-
-int parse_args(int ac, char **av, t_table *table)
+int	parse_args(int ac, char **av, t_table *table)
 {
 	if (ac != 5 && ac != 6)
 	{
@@ -55,13 +64,13 @@ int parse_args(int ac, char **av, t_table *table)
 **   - values that overflow LONG_MAX or are <= 0
 ** Writes the parsed value to *out. Returns 0 on success, 1 on error.
 */
-int ft_atol_positive(const char *s, long *out)
+int	ft_atol_positive(const char *s, long *out)
 {
-	long value;
-	int i;
+	long	value;
+	int		i;
+
 	i = 0;
 	value = 0;
-
 	if (!s || !s[0])
 		return (1);
 	while (s[i])
