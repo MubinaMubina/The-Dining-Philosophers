@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 17:48:09 by mmubina           #+#    #+#             */
-/*   Updated: 2026/06/06 17:48:43 by mmubina          ###   ########.fr       */
+/*   Updated: 2026/06/10 19:13:56 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,8 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	/* edge case: 1 philosopher has only 1 fork, can't ever eat → die */
 	if (philo->table->num_philos == 1)
 		return (handle_one_philo(philo));
-	/* stagger start to reduce contention */
 	if (philo->id % 2 == 1)
 		usleep(1000);
 	while (!simulation_stopped(philo->table))

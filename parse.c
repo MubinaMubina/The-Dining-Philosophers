@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 17:47:39 by mmubina           #+#    #+#             */
-/*   Updated: 2026/06/06 17:48:50 by mmubina          ###   ########.fr       */
+/*   Updated: 2026/06/10 19:15:21 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	parse_args(int ac, char **av, t_table *table)
 {
 	if (ac != 5 && ac != 6)
 	{
-		printf("Usage: ./philo num_philos time_to_die time_to_eat time_to_sleep [must_eat]\n");
+		printf("Usage: ./philo num_philos time_to_die [must_eat]\n");
 		return (1);
 	}
 	if (parse_int_field(av[1], &table->num_philos) != 0)
